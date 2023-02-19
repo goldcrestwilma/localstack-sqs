@@ -1,0 +1,4 @@
+rootProject.name = 'localstack-sqs'
+include 'producer'
+include 'consumer'
+

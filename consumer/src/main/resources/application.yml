@@ -1,0 +1,20 @@
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: us-east-1
+      auto: false
+    credentials:
+      access-key: qwer
+      secret-key: 1234
+    queue:
+      name: sample-queue.fifo
+      uri: http://localhost:4566
+
+server:
+  port: 8081
+
+logging:
+  level:
+    com.amazonaws.util.EC2MetadataUtils: error

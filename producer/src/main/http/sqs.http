@@ -1,0 +1,8 @@
+###
+POST http://localhost:8080/sendMessage
+Content-Type: application/json
+
+{
+  "message": "hello world"
+}
+
