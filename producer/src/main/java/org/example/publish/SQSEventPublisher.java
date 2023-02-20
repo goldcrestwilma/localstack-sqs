@@ -18,7 +18,6 @@ import java.util.UUID;
 public class SQSEventPublisher {
 
     private final AmazonSQS amazonSQS;
-
     private final ObjectMapper objectMapper;
 
     public void publishEvent(JsonNode message) {
