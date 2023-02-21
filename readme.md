@@ -33,5 +33,6 @@ aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://
 3. docker exec 접속 후 큐 생성
 4. producer 실행
 5. consumer 실행
-6. POST http://localhost:8080/sendMessage
+6. 메시지 발행 
+- POST http://localhost:8080/sendMessage
 
