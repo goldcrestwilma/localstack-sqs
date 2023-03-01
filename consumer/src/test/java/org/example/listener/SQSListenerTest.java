@@ -1,38 +1,33 @@
 package org.example.listener;
 
-import com.amazonaws.services.sqs.AmazonSQSAsync;
-import org.junit.jupiter.api.BeforeEach;
+import cloud.localstack.ServiceName;
+import cloud.localstack.awssdkv1.TestUtils;
+import cloud.localstack.docker.LocalstackDockerExtension;
+import cloud.localstack.docker.annotation.LocalstackDockerProperties;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.model.CreateQueueResult;
+import com.amazonaws.services.sqs.model.ReceiveMessageResult;
+import com.amazonaws.services.sqs.model.SendMessageResult;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.Map;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-//@ExtendWith(LocalstackDockerExtension.class)
-//@LocalstackDockerProperties(services = "sqs")
-@SpringBootTest
+@ExtendWith(LocalstackDockerExtension.class)
+@LocalstackDockerProperties(services = ServiceName.SQS)
 class SQSListenerTest {
-
-    @Autowired
-    AmazonSQSAsync amazonSQS;
-
-    @Autowired
-    SQSListener sqsListener;
-
-    @BeforeEach
-    void setUp() {
-        Map<String, Object> messageHeaders = Map.of("contentType", "application/json");
-        String payload = "{ \"message\": \"hello\"";
-        amazonSQS.createQueue("test-queue");
-        amazonSQS.sendMessage("test-queue", "hello");
-    }
 
     @Test
     void name() {
         // given
+        AmazonSQS sqs = TestUtils.getClientSQS();
+        CreateQueueResult queue = sqs.createQueue("sample-queue");
 
         // when
+        SendMessageResult sendMessageResult = sqs.sendMessage(queue.getQueueUrl(), "hello sqs");
+        ReceiveMessageResult receiveMessageResult = sqs.receiveMessage(queue.getQueueUrl());
 
         // then
+        assertThat(receiveMessageResult.getMessages().get(0).getBody()).isEqualTo("hello sqs");
     }
 }
